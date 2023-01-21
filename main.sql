@@ -178,4 +178,9 @@ create table rentals(
 );
 
 insert into rentals values(seq_rentals.nextval, 1, rented_id_type(0, 1, null), sysdate, sysdate);
+insert into rentals values(seq_rentals.nextval, 1, rented_id_type(null, 1, null), sysdate, sysdate);
 select * from rentals;
+
+begin
+    OWNER_COMMANDS.VIEW_RENTALS;
+end;

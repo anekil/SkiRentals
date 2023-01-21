@@ -25,9 +25,30 @@ PACKAGE BODY OWNER_COMMANDS AS
     dbms_output.put_line(result);
   END VIEW_ITEM;
   
-  PROCEDURE VIEW_RENTALS(view_id in number) AS
+  PROCEDURE VIEW_RENTALS AS
+  rent_id number;
+  cust_id number;
+  rent_ids rented_id_type;
+  s_date date;
+  e_date date;
+  cur cur_type;
   BEGIN
-    NULL;
+    open cur for select rental_id, customer_id, rented_ids, rental_start_date, rental_end_date from rentals;
+        loop
+            fetch cur into rent_id, cust_id, rent_ids, s_date, e_date;
+            exit when cur%notfound;
+            dbms_output.put_line('rantal id: ' || rent_id);
+            dbms_output.put_line('customer id: ' || cust_id);
+            dbms_output.put('list of rentals: ');
+            for i in rent_ids.first..rent_ids.last loop
+                dbms_output.put(rent_ids(i) || ' ');
+            end loop;
+            dbms_output.put_line('');
+            dbms_output.put_line('start date: ' || s_date);
+            dbms_output.put_line('end date: ' || e_date);
+            dbms_output.put_line('');
+        end loop;
+    close cur;
   END VIEW_RENTALS;
 
 END OWNER_COMMANDS;
