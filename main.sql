@@ -162,7 +162,7 @@ OWNER_COMMANDS.VIEW_ITEM(2);
 end;
 
 -- ############################################################################################################################
-create or replace type rented_id_type as varray(4) of number;
+create or replace type rented_id_type as varray(3) of number;
 CREATE SEQUENCE seq_rentals INCREMENT BY 1 START WITH 1;
 
 create table rentals(
@@ -176,5 +176,5 @@ create table rentals(
     rental_end_date date
 );
 
-insert into rentals values(seq_rentals.nextval, 1, rented_id_type(0, 1, 2, null), sysdate, sysdate);
+insert into rentals values(seq_rentals.nextval, 1, rented_id_type(0, 1, null), sysdate, sysdate);
 select * from rentals;
