@@ -23,7 +23,6 @@ END;
 
 -- DB
 
-
 create or replace type address_object as object(
     street varchar2(40),
     street_no number,
@@ -51,7 +50,7 @@ select * from customers;
 insert into customers values(seq_customers.nextval, 'Jan', 'Kowalski', 123456789, 'jan.kowalski@gmail.com', address_object('sloneczna', 7, 2, '12-345'), 80, 1.8);
 
 
--- ############################################################################################################################
+-- #############################################################################################################################
 
 CREATE OR REPLACE TYPE eq_t AS OBJECT (
  id      number,
@@ -123,6 +122,7 @@ CREATE TYPE BODY boots_t AS
  OVERRIDING MEMBER FUNCTION get_type RETURN VARCHAR2 IS BEGIN RETURN 'boots'; END;
 END;
 
+-- creaing table with equipment
 create table eq_tab of eq_t(id primary key not null);
 alter table eq_tab add constraint check_rent check (rent LIKE 'Y' OR rent LIKE 'N');
 alter table eq_tab add constraint check_ski_type check (ski_type LIKE IN('allride', 'allmountain', 'race'));
@@ -130,15 +130,36 @@ alter table eq_tab add constraint check_helmet_size check (helmet_size BETWEEN 5
 alter table eq_tab add constraint check_boots_size check (boots_size BETWEEN 34 AND 48);
 
 
+-- exaple inserts
 insert into eq_tab values(ski_t(0, '4FRNT', 100, 'N', 230, 'allride'));
 insert into eq_tab values(helmet_t(1, 'Smith Vantage MIPS', 20, 'Y', 15));
 insert into eq_tab values(boots_t(2, 'Fischer', 10, 'N', 46));
 
+-- example selects
 select * from eq_tab;
-select eq.show() from eq_tab eq; --where eq.id = 1;
+select eq.show() from eq_tab eq;
+select eq.show() from eq_tab eq where eq.id = 1;
+delete from eq_tab e where e.id = (select id from eq_tab eq where eq.id = 1);
 select eq.get_type() from eq_tab eq;
 select eq.show() from eq_tab eq where eq.get_type() = 'helmet';
 select eq.get_type(), eq.get_name(), eq.get_price(), eq.get_rent() from eq_tab eq;
+
+-- example of call package procedures for owner
+begin
+OWNER_COMMANDS.ADD_ITEM(ski_t(77, '4FRNT', 100, 'N', 230, 'allride'));
+end;
+
+begin
+OWNER_COMMANDS.UPDATE_ITEM(77, ski_t(99, '4FRNT', 200, 'Y', 230, 'allride'));
+end;
+
+begin
+OWNER_COMMANDS.DEL_ITEM(0);
+end;
+
+begin
+OWNER_COMMANDS.VIEW_ITEM(2);
+end;
 
 -- ############################################################################################################################
 create or replace type rented_id_type as varray(4) of number;
@@ -157,25 +178,3 @@ create table rentals(
 
 insert into rentals values(seq_rentals.nextval, 1, rented_id_type(0, 1, 2, null), sysdate, sysdate);
 select * from rentals;
-
-CREATE OR REPLACE PACKAGE owner_commands AS
-
-PROCEDURE ADD_SKI(
-    
-);
-
-PROCEDURE UPDATE_SKI(
-    
-);
-
-PROCEDURE DELETE_SKI(
-    
-);
-
-FUNCTION VIEW_RENTALS(
-);
-
-FUNCTION VIEW_SKIS(
-);
-
-END owner_commands;

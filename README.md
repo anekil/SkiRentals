@@ -17,6 +17,8 @@
   <li>Narty wybierane są na podstawie wzrostu klienta, płci oraz typu/poziomu zaawansowania? </li> 
 
   <li>Sprzęt posiada cenę, typ, stan wypożyczenia, płeć docelową, [buty] rozmiar, [kask] rozmiar, [narty] długość, [narty] typ (allride, allmountain, race) </li> 
+  
+  <li>Właściciel nie może usunąć przedmiotu który jest aktualnie wypożyczony</li>
 </ul>
 
  
