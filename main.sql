@@ -81,7 +81,7 @@ END;
 
 CREATE TYPE ski_t UNDER eq_t (
    length number,
-   ski_type varchar2(40),
+   ski_type varchar2(12),
    OVERRIDING MEMBER FUNCTION show RETURN VARCHAR2,
    OVERRIDING MEMBER FUNCTION get_type RETURN VARCHAR2)
    NOT FINAL;
@@ -125,6 +125,10 @@ END;
 -- creaing table with equipment
 create table eq_tab of eq_t(id primary key not null);
 alter table eq_tab add constraint check_rent check (rent LIKE 'Y' OR rent LIKE 'N');
+alter table eq_tab add constraint check_ski_type check (ski_type LIKE IN('allride', 'allmountain', 'race'));
+alter table eq_tab add constraint check_helmet_size check (helmet_size BETWEEN 52 AND 62);
+alter table eq_tab add constraint check_boots_size check (boots_size BETWEEN 34 AND 48);
+
 
 -- exaple inserts
 insert into eq_tab values(ski_t(0, '4FRNT', 100, 'N', 230, 'allride'));
