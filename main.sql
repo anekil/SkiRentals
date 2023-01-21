@@ -141,44 +141,22 @@ select eq.show() from eq_tab eq where eq.get_type() = 'helmet';
 select eq.get_type(), eq.get_name(), eq.get_price(), eq.get_rent() from eq_tab eq;
 
 -- ############################################################################################################################
+create or replace type rented_id_type as varray(4) of number;
+CREATE SEQUENCE seq_rentals INCREMENT BY 1 START WITH 1;
 
 create table rentals(
-    rental_id primary key not null,
+    rental_id number primary key not null,
     customer_id number not null,
-    CONSTRAINT fk_customer
+    CONSTRAINT check_customer
         FOREIGN KEY (customer_id)
         REFERENCES customers(customer_id),
-    equipment_id number not null,
-    CONSTRAINT fk_equipment
-        FOREIGN KEY (equipment_id)
-        REFERENCES equipment(equipment_id),
+    rented_ids rented_id_type,
     rental_start_date date,
     rental_end_date date
 );
 
-CREATE OR REPLACE PACKAGE customer_commands AS
-
-PROCEDURE RENT_SKI(
-    customer_id number,
-    ski_id number,
-    rental_start_date date,
-    rental_end_date date
-);
-
-PROCEDURE RETURN_SKI(
-    rental_id number,
-    return_date date
-);
-
-FUNCTION VIEW_RENTALS(
-    customer_id number
-);
-
-FUNCTION SEARCH_SKIS(
-    --kryteria
-);
-
-END customer_commands;
+insert into rentals values(seq_rentals.nextval, 1, rented_id_type(0, 1, 2, null), sysdate, sysdate);
+select * from rentals;
 
 CREATE OR REPLACE PACKAGE owner_commands AS
 
