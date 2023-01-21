@@ -50,7 +50,7 @@ select * from customers;
 insert into customers values(seq_customers.nextval, 'Jan', 'Kowalski', 123456789, 'jan.kowalski@gmail.com', address_object('sloneczna', 7, 2, '12-345'), 80, 1.8);
 
 
--- ############################################################################################################################
+-- #############################################################################################################################
 
 CREATE OR REPLACE TYPE eq_t AS OBJECT (
  id      number,
