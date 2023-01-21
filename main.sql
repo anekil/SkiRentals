@@ -129,6 +129,7 @@ alter table eq_tab add constraint check_ski_type check (ski_type LIKE IN('allrid
 alter table eq_tab add constraint check_helmet_size check (helmet_size BETWEEN 52 AND 62);
 alter table eq_tab add constraint check_boots_size check (boots_size BETWEEN 34 AND 48);
 
+CREATE SEQUENCE seq_eq INCREMENT BY 1 START WITH 1;
 
 -- exaple inserts
 insert into eq_tab values(ski_t(0, '4FRNT', 100, 'N', 230, 'allride'));
