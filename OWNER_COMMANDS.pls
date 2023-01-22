@@ -9,6 +9,7 @@ PACKAGE OWNER_COMMANDS AS
   PROCEDURE VIEW_RENTALS;
   FUNCTION CHECK_CONSTRAINTS(eq_item in eq_t) return number;
   FUNCTION CHECK_ID_EXIST(tocheck_id in number) return number;
+  FUNCTION DEL_AVAIL(del_id in number) return number;
   ex EXCEPTION;
 
 END OWNER_COMMANDS;

@@ -26,7 +26,7 @@ PACKAGE BODY OWNER_COMMANDS AS
   
   PROCEDURE DEL_ITEM(del_id in number) AS
   BEGIN
-    if CHECK_ID_EXIST(del_id) = 1 then
+    if CHECK_ID_EXIST(del_id) = 1 and DEL_AVAIL(del_id) = 1 then
         delete from eq_tab e where e.id = (select id from eq_tab eq where eq.id = del_id);
     else raise ex;
     end if;
@@ -97,6 +97,15 @@ PACKAGE BODY OWNER_COMMANDS AS
   BEGIN
     select count(e.id) into id_exist from eq_tab e where e.id = (select id from eq_tab eq where eq.id = tocheck_id);
     return id_exist;
+  END;
+  
+  FUNCTION DEL_AVAIL(del_id in number) return number AS
+  cant_del char(1);
+  BEGIN
+    select e.rent into cant_del from eq_tab e where e.id = (select id from eq_tab eq where eq.id = del_id);
+    if cant_del = 'Y' then return 0;
+    else return 1;
+    end if;
   END;
 
 END OWNER_COMMANDS;
