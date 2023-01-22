@@ -8,7 +8,7 @@ Projekt obiektowej bazy danych powinien zawierać opracowaną strukturę składa
 - zastosowana zostanie referencja  (wskaźnikiem do rekordu tabeli obiektowej) i dereferencja pozwalająca na wprowadzenie relacji występujących między obiektami,
 - wstawianie danych do tabeli z referencją,
 + tworzenie i użytkowanie typu VARRY/ NESTED TABLE - do modelowania relacji jeden do wielu, gdzie po stronie "wiele" występuje kolekcja obiektów,
-! implementacja z zastosowaniem języka PL/SQL logiki biznesowej w postaci pakietów (a w nich procedur/funkcji) umożliwiającej obsługę bazy obiektowej (kursory, ref kursory, obsługa błędów, wyzwalacze itp.)
++ implementacja z zastosowaniem języka PL/SQL logiki biznesowej w postaci pakietów (a w nich procedur/funkcji) umożliwiającej obsługę bazy obiektowej (kursory, ref kursory, obsługa błędów, wyzwalacze itp.)
 ! przykład obsługi obiektowej bazy danych od strony opracowanych funkcjonalności.
 
 
@@ -50,6 +50,8 @@ Baza zawiera dane o sprzęcie jakim dysponuje wypożyczalnia oraz o jej klientac
   <li>Sprzęt posiada cenę, typ, stan wypożyczenia, płeć docelową, [buty] rozmiar, [kask] rozmiar, [narty] długość, [narty] typ (allride, allmountain, race) </li> 
   
   <li>Właściciel nie może usunąć przedmiotu który jest aktualnie wypożyczony</li>
+  
+  <li>Klient może wypożyczyć dany sprzęt na minimum 1 dzień lub maximum 2 tygodnie</li>
 </ul>
 
   
