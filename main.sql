@@ -169,17 +169,16 @@ OWNER_COMMANDS.ADD_ITEM(ski_t(77, '4FRNT', 100, 'N', 230, 'allride'));
 OWNER_COMMANDS.ADD_ITEM(ski_t(78, '4FRNT', 100, 'N', 230, 'allmountain'));
 OWNER_COMMANDS.ADD_ITEM(ski_t(79, '4FRNT', 100, 'N', 230, 'inny typ'));
 OWNER_COMMANDS.ADD_ITEM(ski_t(80, '4FRNT', 100, 'N', 230, 'race'));
-EXCEPTION
-    when others then
-        dbms_output.put_line('record cannot be added');
 end;
 
 begin
 OWNER_COMMANDS.UPDATE_ITEM(77, ski_t(99, '4FRNT', 200, 'Y', 230, 'allride'));
+OWNER_COMMANDS.UPDATE_ITEM(100, ski_t(99, '4FRNT', 200, 'Y', 230, 'allride'));
 end;
 
 begin
 OWNER_COMMANDS.DEL_ITEM(0);
+OWNER_COMMANDS.DEL_ITEM(100);
 end;
 
 begin

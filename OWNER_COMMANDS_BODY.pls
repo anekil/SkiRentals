@@ -2,30 +2,50 @@ CREATE OR REPLACE
 PACKAGE BODY OWNER_COMMANDS AS
 
   PROCEDURE ADD_ITEM(eq_item in eq_t) AS
-  ex exception;
   BEGIN
-    if CHECK_DATA(eq_item) = 1 then
+    if CHECK_CONSTRAINTS(eq_item) = 1 then
         insert into eq_tab values(eq_item);
     else raise ex;
     end if;
+    EXCEPTION
+        when ex then
+            dbms_output.put_line('cannot add item');
   END ADD_ITEM;
   
   PROCEDURE UPDATE_ITEM(update_id in number, eq_item in eq_t) AS
   BEGIN
-    DEL_ITEM(update_id);
-    ADD_ITEM(eq_item);
+    if CHECK_ID_EXIST(update_id) = 1 and CHECK_CONSTRAINTS(eq_item) = 1 then
+        DEL_ITEM(update_id);
+        ADD_ITEM(eq_item);
+    else raise ex;
+    end if;
+    EXCEPTION
+        when ex then
+            dbms_output.put_line('cannot update item');
   END UPDATE_ITEM;
   
   PROCEDURE DEL_ITEM(del_id in number) AS
   BEGIN
-    delete from eq_tab e where e.id = (select id from eq_tab eq where eq.id = del_id);
+    if CHECK_ID_EXIST(del_id) = 1 then
+        delete from eq_tab e where e.id = (select id from eq_tab eq where eq.id = del_id);
+    else raise ex;
+    end if;
+    EXCEPTION
+        when ex then
+            dbms_output.put_line('cannot delete item');
   END DEL_ITEM;
   
   PROCEDURE VIEW_ITEM(view_id in number) AS
   result varchar2(256);
   BEGIN
-    select eq.show() into result from eq_tab eq where eq.id = view_id;
-    dbms_output.put_line(result);
+    if CHECK_ID_EXIST(view_id) = 1 then
+        select eq.show() into result from eq_tab eq where eq.id = view_id;
+        dbms_output.put_line(result);
+    else raise ex;
+    end if;
+    EXCEPTION
+        when ex then
+            dbms_output.put_line('cannot view item');
   END VIEW_ITEM;
   
   PROCEDURE VIEW_RENTALS AS
@@ -54,7 +74,7 @@ PACKAGE BODY OWNER_COMMANDS AS
     close cur;
   END VIEW_RENTALS;
   
-  FUNCTION CHECK_DATA(eq_item in eq_t) RETURN NUMBER AS
+  FUNCTION CHECK_CONSTRAINTS(eq_item in eq_t) RETURN NUMBER AS
   BEGIN
     case eq_item.get_type()
         when 'ski' then
@@ -70,6 +90,13 @@ PACKAGE BODY OWNER_COMMANDS AS
             else return 0;
             end if;
     end case;
+  END;
+  
+  FUNCTION CHECK_ID_EXIST(tocheck_id in number) return number AS
+  id_exist number := 0;
+  BEGIN
+    select count(e.id) into id_exist from eq_tab e where e.id = (select id from eq_tab eq where eq.id = tocheck_id);
+    return id_exist;
   END;
 
 END OWNER_COMMANDS;
