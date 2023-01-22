@@ -28,7 +28,7 @@ set serveroutput on;
 create or replace type address_object as object(
     street varchar2(40),
     street_no number,
-    post_code number(6),
+    post_code varchar2(6),
     city varchar2(20)
 );
 
@@ -42,14 +42,12 @@ create table customers(
     email varchar(40),
     CONSTRAINT check_email CHECK (email LIKE '%@%.com' OR email LIKE '%@%.pl'),
     address address_object,
-    weight number(5, 2),
-    CONSTRAINT check_weight CHECK (weight > 0),
     height number(5, 2)
     CONSTRAINT check_height CHECK (height > 0)
 );
 
 select * from customers;
-insert into customers values(seq_customers.nextval, 'Jan', 'Kowalski', 123456789, 'jan.kowalski@gmail.com', address_object('sloneczna', 7, 2, '12-345'), 80, 1.8);
+insert into customers values(seq_customers.nextval, 'Jan', 'Kowalski', 123456789, 'jan.kowalski@gmail.com', address_object('sloneczna 7', 2, '12-345', 'lodz'), 1.8);
 
 
 -- #############################################################################################################################
