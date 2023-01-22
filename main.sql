@@ -207,7 +207,7 @@ select * from rentals;
 
 begin
     CUSTOMER_COMMANDS.RENT_SKI(
-        customer_id => 2,
+        customer_id => 1,
         ski_id => 0,
         boots_id => 1,
         helmet_id => 2,
