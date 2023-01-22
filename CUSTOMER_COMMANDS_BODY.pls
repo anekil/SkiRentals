@@ -40,14 +40,14 @@ PACKAGE BODY CUSTOMER_COMMANDS AS
   END RENT_SKI;
 
   PROCEDURE RETURN_SKI(
-    rental_id number,
+    rent_id number,
     return_date date
 ) AS
     rented rented_id_type;
     single_price number;
     payment number := 0;
   BEGIN   
-    select rented_ids into rented from rentals where rentals.rental_id = 2;
+    select rented_ids into rented from rentals where rentals.rental_id = rent_id;
     for i in 1..rented.count loop
         update eq_tab set rent='N' where id=rented(i);
         select price into single_price from eq_tab where eq_tab.id=rented(i);

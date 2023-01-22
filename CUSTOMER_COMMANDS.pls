@@ -12,7 +12,7 @@ PROCEDURE RENT_SKI(
 );
 
 PROCEDURE RETURN_SKI(
-    rental_id number,
+    rent_id number,
     return_date date
 );
 

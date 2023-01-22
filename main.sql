@@ -222,7 +222,7 @@ end;
 
 begin
     CUSTOMER_COMMANDS.RETURN_SKI(
-        rental_id => 1,
+        rent_id => 1,
         return_date => sysdate);
 end;
 
