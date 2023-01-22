@@ -2,15 +2,12 @@ CREATE OR REPLACE
 PACKAGE BODY OWNER_COMMANDS AS
 
   PROCEDURE ADD_ITEM(eq_item in eq_t) AS
+  ex exception;
   BEGIN
-  --test
-    if eq_item.get_ski_type() = 'ala' then
-        dbms_output.put_line('ok');
-    else 
-        dbms_output.put_line('not ok');
+    if CHECK_DATA(eq_item) = 1 then
+        insert into eq_tab values(eq_item);
+    else raise ex;
     end if;
-  -- test end
-    insert into eq_tab values(eq_item);
   END ADD_ITEM;
   
   PROCEDURE UPDATE_ITEM(update_id in number, eq_item in eq_t) AS
@@ -20,7 +17,6 @@ PACKAGE BODY OWNER_COMMANDS AS
   END UPDATE_ITEM;
   
   PROCEDURE DEL_ITEM(del_id in number) AS
-  
   BEGIN
     delete from eq_tab e where e.id = (select id from eq_tab eq where eq.id = del_id);
   END DEL_ITEM;
@@ -57,5 +53,23 @@ PACKAGE BODY OWNER_COMMANDS AS
         end loop;
     close cur;
   END VIEW_RENTALS;
+  
+  FUNCTION CHECK_DATA(eq_item in eq_t) RETURN NUMBER AS
+  BEGIN
+    case eq_item.get_type()
+        when 'ski' then
+            if eq_item.get_ski_type NOT IN('allride', 'allmountain', 'race') then return 0;
+            else return 1;
+            end if;
+        when 'helmet' then
+            if eq_item.get_helmet_size BETWEEN 52 AND 62 then return 1;
+            else return 0;
+            end if;
+        when 'boots' then
+            if eq_item.get_boots_size BETWEEN 34 AND 48 then return 1;
+            else return 0;
+            end if;
+    end case;
+  END;
 
 END OWNER_COMMANDS;

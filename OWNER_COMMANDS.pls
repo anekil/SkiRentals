@@ -7,5 +7,6 @@ PACKAGE OWNER_COMMANDS AS
   PROCEDURE VIEW_ITEM(view_id in number);
   Type cur_type is ref cursor;
   PROCEDURE VIEW_RENTALS;
+  FUNCTION CHECK_DATA(eq_item in eq_t) return number;
 
 END OWNER_COMMANDS;

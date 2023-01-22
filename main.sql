@@ -165,7 +165,13 @@ select eq.get_type(), eq.get_name(), eq.get_price(), eq.get_rent() from eq_tab e
 
 -- example of call package procedures for owner
 begin
-OWNER_COMMANDS.ADD_ITEM(ski_t(727, '4FRNT', 100, 'N', 230, 'allride'));
+OWNER_COMMANDS.ADD_ITEM(ski_t(77, '4FRNT', 100, 'N', 230, 'allride'));
+OWNER_COMMANDS.ADD_ITEM(ski_t(78, '4FRNT', 100, 'N', 230, 'allmountain'));
+OWNER_COMMANDS.ADD_ITEM(ski_t(79, '4FRNT', 100, 'N', 230, 'inny typ'));
+OWNER_COMMANDS.ADD_ITEM(ski_t(80, '4FRNT', 100, 'N', 230, 'race'));
+EXCEPTION
+    when others then
+        dbms_output.put_line('record cannot be added');
 end;
 
 begin
