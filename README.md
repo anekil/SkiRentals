@@ -23,36 +23,41 @@ Dodatkowo proszę przygotować sprawozdanie w którym opisane zostaną założen
 
 <h1>Projekt bazy danych dla wypożyczalni sprzętu narciarskiego</h1>
 
+<h2>Opis projektu</h2>
+Projekt jest przykładową prostą bazą danych stworzoną na potrzeby wypożyczalni sprzętu narciarskiego. <b>
+Baza zawiera dane o sprzęcie jakim dysponuje wypożyczalnia oraz o jej klientach. Obie te tabele łączy tabela ze szczegółami wypożyczeń. 
+
 <b>Założenia projektu:</b>
 <ul>
-  <li>Jednorazowo klient może wypożyczyć jeden zestaw składający się z nart, butów, kijków i kasku. </li> 
+  <li>Właścicel wypożyczalni ma możliwość dodania, edytowania bądź usunięcia sprzętu oraz zobaczenia zawartości tabeli ze sprzętem i szczegółami wypożyczeń </li> 
+   
+  <li>Klient ma możliwość wypożyczenia sprzętu, oddania go, zobaczenia swoich wypożyczeń oraz dobrania odpowiednich nart </li> 
+  
+  <li>Jednorazowo klient może wypożyczyć jeden zestaw składający się z nart, butów i kasku. </li> 
 
-  <li>Klient musi podać swoje dane, aby wypożyczyć sprzęt tj. Imię, nazwisko, PESEL </li> 
+  <li>Klient musi podać swoje dane, aby wypożyczyć sprzęt tj. imię, nazwisko, adres, numer telefonu i email </li> 
 
   <li>Nie można wypożyczyć sprzętu, który jest aktualnie wypożyczony.  </li> 
-
+  
   <li>Po zwróceniu sprzętu wyświetlana jest cena do zapłaty, wyliczana na podstawie ceny, czasu wypożyczenia i ewentualnej kary za przekroczenie zadeklarowanego czasu dzierżawy. </li> 
 
   <li>Klient ma możliwość wcześniejszego zwrotu sprzętu, odpowiednio opłata zostanie zmniejszona </li> 
 
   <li>Klient może wydłużyć okres wypożyczenia </li> 
 
-  <li>Narty wybierane są na podstawie wzrostu klienta, płci oraz typu/poziomu zaawansowania? </li> 
+  <li>Narty wybierane są na podstawie wzrostu klienta, płci oraz typu </li> 
 
   <li>Sprzęt posiada cenę, typ, stan wypożyczenia, płeć docelową, [buty] rozmiar, [kask] rozmiar, [narty] długość, [narty] typ (allride, allmountain, race) </li> 
   
   <li>Właściciel nie może usunąć przedmiotu który jest aktualnie wypożyczony</li>
 </ul>
 
+  
+<b>Schemat relacji </b>
  
 
 <b>Typy </b>
 
- 
-
-<b>Schemat relacji </b>
-
- 
 
 <b>Pakiety </b>
 
