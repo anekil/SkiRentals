@@ -3,6 +3,13 @@ PACKAGE BODY OWNER_COMMANDS AS
 
   PROCEDURE ADD_ITEM(eq_item in eq_t) AS
   BEGIN
+  --test
+    if eq_item.get_ski_type() = 'ala' then
+        dbms_output.put_line('ok');
+    else 
+        dbms_output.put_line('not ok');
+    end if;
+  -- test end
     insert into eq_tab values(eq_item);
   END ADD_ITEM;
   

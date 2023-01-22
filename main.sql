@@ -23,6 +23,8 @@ END;
 
 -- DB
 
+set serveroutput on;
+
 create or replace type address_object as object(
     street varchar2(40),
     street_no number,
@@ -62,7 +64,11 @@ CREATE OR REPLACE TYPE eq_t AS OBJECT (
  MEMBER FUNCTION get_type RETURN VARCHAR2,
  MEMBER FUNCTION get_name RETURN VARCHAR2,
  MEMBER FUNCTION get_price RETURN NUMBER,
- MEMBER FUNCTION get_rent RETURN CHAR)
+ MEMBER FUNCTION get_rent RETURN CHAR,
+ MEMBER FUNCTION get_ski_type RETURN VARCHAR2,
+ MEMBER FUNCTION get_ski_length RETURN NUMBER,
+ MEMBER FUNCTION get_helmet_size RETURN NUMBER,
+ MEMBER FUNCTION get_boots_size RETURN NUMBER)
  NOT FINAL;
  
 CREATE OR REPLACE TYPE BODY eq_t AS
@@ -76,6 +82,10 @@ CREATE OR REPLACE TYPE BODY eq_t AS
  MEMBER FUNCTION get_name RETURN VARCHAR2 IS BEGIN RETURN name; END;
  MEMBER FUNCTION get_price RETURN NUMBER IS BEGIN RETURN price; END;
  MEMBER FUNCTION get_rent RETURN CHAR IS BEGIN RETURN rent; END;
+ MEMBER FUNCTION get_ski_type RETURN VARCHAR2 IS BEGIN RETURN 'None'; END;
+ MEMBER FUNCTION get_ski_length RETURN NUMBER IS BEGIN RETURN 0; END;
+ MEMBER FUNCTION get_helmet_size RETURN NUMBER IS BEGIN RETURN 0; END;
+ MEMBER FUNCTION get_boots_size RETURN NUMBER IS BEGIN RETURN 0; END;
 END;
 
 
@@ -83,7 +93,9 @@ CREATE TYPE ski_t UNDER eq_t (
    length number,
    ski_type varchar2(12),
    OVERRIDING MEMBER FUNCTION show RETURN VARCHAR2,
-   OVERRIDING MEMBER FUNCTION get_type RETURN VARCHAR2)
+   OVERRIDING MEMBER FUNCTION get_type RETURN VARCHAR2,
+   OVERRIDING MEMBER FUNCTION get_ski_type RETURN VARCHAR2,
+   OVERRIDING MEMBER FUNCTION get_ski_length RETURN NUMBER)
    NOT FINAL;
    
 CREATE TYPE BODY ski_t AS
@@ -92,12 +104,15 @@ CREATE TYPE BODY ski_t AS
     RETURN (self AS eq_t).show || ' Length: ' || length || ' Type: ' || ski_type ;
  END;
  OVERRIDING MEMBER FUNCTION get_type RETURN VARCHAR2 IS BEGIN RETURN 'ski'; END;
+ OVERRIDING MEMBER FUNCTION get_ski_type RETURN VARCHAR2 IS BEGIN RETURN ski_type; END;
+ OVERRIDING MEMBER FUNCTION get_ski_length RETURN NUMBER IS BEGIN RETURN length; END;
 END;
 
 CREATE TYPE helmet_t UNDER eq_t (
    helmet_size number,
    OVERRIDING MEMBER FUNCTION show RETURN VARCHAR2,
-   OVERRIDING MEMBER FUNCTION get_type RETURN VARCHAR2)
+   OVERRIDING MEMBER FUNCTION get_type RETURN VARCHAR2,
+   OVERRIDING MEMBER FUNCTION get_helmet_size RETURN NUMBER)
    NOT FINAL;
    
 CREATE TYPE BODY helmet_t AS
@@ -106,12 +121,14 @@ CREATE TYPE BODY helmet_t AS
     RETURN (self AS eq_t).show || ' Size: ' || helmet_size;
  END;
  OVERRIDING MEMBER FUNCTION get_type RETURN VARCHAR2 IS BEGIN RETURN 'helmet'; END;
+ OVERRIDING MEMBER FUNCTION get_helmet_size RETURN NUMBER IS BEGIN RETURN helmet_size; END;
 END;
 
 CREATE TYPE boots_t UNDER eq_t (
    boots_size number,
    OVERRIDING MEMBER FUNCTION show RETURN VARCHAR2,
-   OVERRIDING MEMBER FUNCTION get_type RETURN VARCHAR2)
+   OVERRIDING MEMBER FUNCTION get_type RETURN VARCHAR2,
+   OVERRIDING MEMBER FUNCTION get_boots_size RETURN NUMBER)
    NOT FINAL;
    
 CREATE TYPE BODY boots_t AS
@@ -120,14 +137,15 @@ CREATE TYPE BODY boots_t AS
     RETURN (self AS eq_t).show || ' Size: ' || boots_size;
  END;
  OVERRIDING MEMBER FUNCTION get_type RETURN VARCHAR2 IS BEGIN RETURN 'boots'; END;
+ OVERRIDING MEMBER FUNCTION get_boots_size RETURN NUMBER IS BEGIN RETURN boots_size; END;
 END;
 
 -- creaing table with equipment
 create table eq_tab of eq_t(id primary key not null);
 alter table eq_tab add constraint check_rent check (rent LIKE 'Y' OR rent LIKE 'N');
-alter table eq_tab add constraint check_ski_type check (ski_type LIKE IN('allride', 'allmountain', 'race'));
-alter table eq_tab add constraint check_helmet_size check (helmet_size BETWEEN 52 AND 62);
-alter table eq_tab add constraint check_boots_size check (boots_size BETWEEN 34 AND 48);
+--alter table eq_tab add constraint check_ski_type check (ski_type LIKE IN('allride', 'allmountain', 'race'));
+--alter table eq_tab add constraint check_helmet_size check (helmet_size BETWEEN 52 AND 62);
+--alter table eq_tab add constraint check_boots_size check (boots_size BETWEEN 34 AND 48);
 
 CREATE SEQUENCE seq_eq INCREMENT BY 1 START WITH 1;
 
@@ -147,7 +165,7 @@ select eq.get_type(), eq.get_name(), eq.get_price(), eq.get_rent() from eq_tab e
 
 -- example of call package procedures for owner
 begin
-OWNER_COMMANDS.ADD_ITEM(ski_t(77, '4FRNT', 100, 'N', 230, 'allride'));
+OWNER_COMMANDS.ADD_ITEM(ski_t(727, '4FRNT', 100, 'N', 230, 'allride'));
 end;
 
 begin
