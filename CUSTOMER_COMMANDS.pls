@@ -1,7 +1,8 @@
 CREATE OR REPLACE 
 PACKAGE CUSTOMER_COMMANDS AS 
+Type cur_type is ref cursor;
 
-  PROCEDURE RENT_SKI(
+PROCEDURE RENT_SKI(
     customer_id number,
     ski_id number,
     boots_id number,
@@ -15,13 +16,14 @@ PROCEDURE RETURN_SKI(
     return_date date
 );
 
-FUNCTION VIEW_RENTALS(
-    customer_id IN number
+PROCEDURE VIEW_RENTALS(
+    customer_id number
 );
 
-FUNCTION SEARCH_SKIS(
-    height IN number,
-    type IN varchar2(12)
+PROCEDURE SEARCH_SKIS(
+    height number,
+    ski_type varchar2,
+    sex char
 );
 
 END CUSTOMER_COMMANDS;

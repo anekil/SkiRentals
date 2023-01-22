@@ -143,9 +143,6 @@ END;
 -- creaing table with equipment
 create table eq_tab of eq_t(id primary key not null);
 alter table eq_tab add constraint check_rent check (rent LIKE 'Y' OR rent LIKE 'N');
---alter table eq_tab add constraint check_ski_type check (ski_type LIKE IN('allride', 'allmountain', 'race'));
---alter table eq_tab add constraint check_helmet_size check (helmet_size BETWEEN 52 AND 62);
---alter table eq_tab add constraint check_boots_size check (boots_size BETWEEN 34 AND 48);
 
 CREATE SEQUENCE seq_eq INCREMENT BY 1 START WITH 1;
 
@@ -201,10 +198,41 @@ create table rentals(
     rental_end_date date
 );
 
-insert into rentals values(seq_rentals.nextval, 1, rented_id_type(0, 1, null), sysdate, sysdate);
-insert into rentals values(seq_rentals.nextval, 1, rented_id_type(null, 1, null), sysdate, sysdate);
+begin
+    OWNER_COMMANDS.VIEW_RENTALS;
+end;
+
+select * from customers;
+select * from eq_tab;
 select * from rentals;
 
 begin
-    OWNER_COMMANDS.VIEW_RENTALS;
+    CUSTOMER_COMMANDS.RENT_SKI(
+        customer_id => 1,
+        ski_id => 0,
+        boots_id => 1,
+        helmet_id => 2,
+        rental_start_date => sysdate,
+        rental_end_date => sysdate);
+end;
+
+begin
+    CUSTOMER_COMMANDS.VIEW_RENTALS(
+        customer_id => 1); 
+end;
+
+begin
+    CUSTOMER_COMMANDS.RETURN_SKI(
+        rental_id => 1,
+        return_date => sysdate);
+end;
+
+select eq.show() from eq_tab eq where eq.get_type() = 'ski';
+
+begin 
+    CUSTOMER_COMMANDS.SEARCH_SKIS(
+    height => 240,
+    ski_type => 'allmountain',
+    sex => 'M'
+);
 end;
