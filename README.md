@@ -43,7 +43,7 @@ Opis
 
 + Sprzęt posiada cenę, typ, stan wypożyczenia, [buty] rozmiar, [kask] rozmiar, [narty] długość, [narty] typ (allride, allmountain, race)
   
-- Właściciel nie może usunąć przedmiotu który jest aktualnie wypożyczony
++ Właściciel nie może usunąć przedmiotu który jest aktualnie wypożyczony
   
 + Klient może wypożyczyć dany sprzęt na minimum 1 dzień lub maximum 2 tygodnie
 ```
