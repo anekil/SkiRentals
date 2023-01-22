@@ -62,34 +62,25 @@ PACKAGE BODY CUSTOMER_COMMANDS AS
   END RETURN_SKI;
 
   PROCEDURE VIEW_RENTALS(
-    customer_id number
+    cust_id number
 ) 
 AS
-    rent_id number;
-    cust_id number;
-    rent_ids rented_id_type;
-    s_date date;
-    e_date date;
-    cur cur_type;
+  cursor cur is select rental_id, customer_id, rented_ids, rental_start_date, rental_end_date 
+  from rentals r where r.customer_id = cust_id;
   BEGIN
-    open cur for select rental_id, customer_id, rented_ids, rental_start_date, rental_end_date from rentals;
-        loop
-            fetch cur into rent_id, cust_id, rent_ids, s_date, e_date;
-            exit when cur%notfound;
-            if cust_id = customer_id then
-                dbms_output.put_line('rental id: ' || rent_id);
-                dbms_output.put_line('customer id: ' || cust_id);
-                dbms_output.put('list of rentals: ');
-                for i in rent_ids.first..rent_ids.last loop
-                    dbms_output.put(rent_ids(i) || ' ');
-                end loop;
-                dbms_output.put_line('');
-                dbms_output.put_line('start date: ' || s_date);
-                dbms_output.put_line('end date: ' || e_date);
-                dbms_output.put_line('');
-            end if;
+    for c in cur
+    loop
+        dbms_output.put_line('rental id: ' || c.rental_id);
+        dbms_output.put_line('customer id: ' || c.customer_id);
+        dbms_output.put('list of rentals: ');
+        for i in c.rented_ids.first..c.rented_ids.last loop
+            dbms_output.put(c.rented_ids(i) || ' ');
         end loop;
-    close cur;
+        dbms_output.put_line('');
+        dbms_output.put_line('start date: ' || c.rental_start_date);
+        dbms_output.put_line('end date: ' || c.rental_end_date);
+        dbms_output.put_line('');
+    end loop;
   END VIEW_RENTALS;
 
   PROCEDURE SEARCH_SKIS(

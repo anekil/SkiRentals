@@ -17,7 +17,7 @@ PROCEDURE RETURN_SKI(
 );
 
 PROCEDURE VIEW_RENTALS(
-    customer_id number
+    cust_id number
 );
 
 PROCEDURE SEARCH_SKIS(
