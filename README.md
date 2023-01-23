@@ -21,7 +21,7 @@ Dodatkowo proszę przygotować sprawozdanie w którym opisane zostaną założen
 
 Opis
 
-- Właściciel dodaje klienta
++ Właściciel dodaje klienta
 
 + Właścicel wypożyczalni ma możliwość dodania, edytowania bądź usunięcia sprzętu oraz zobaczenia zawartości tabeli ze sprzętem i szczegółami wypożyczeń
    
