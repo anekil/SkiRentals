@@ -1,6 +1,11 @@
 CREATE OR REPLACE
 PACKAGE BODY OWNER_COMMANDS AS
 
+  PROCEDURE ADD_CUSTOMER(fname in varchar2, lname in varchar2, phone in number, email in varchar2, address in address_object, height in number) AS
+  BEGIN
+    insert into customers values(seq_customers.nextval, fname, lname, phone, email, address, height);
+  END ADD_CUSTOMER;
+
   PROCEDURE ADD_ITEM(eq_item in eq_t) AS
   BEGIN
     if CHECK_CONSTRAINTS(eq_item) = 1 then

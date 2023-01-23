@@ -39,7 +39,7 @@ create table customers(
     first_name varchar2(20),
     last_name varchar2(20),
     phone_number number(9,0),
-    email varchar(40),
+    email varchar(40)
     CONSTRAINT check_email CHECK (email LIKE '%@%.com' OR email LIKE '%@%.pl'),
     address address_object,
     height number(5, 2)
@@ -48,6 +48,10 @@ create table customers(
 
 select * from customers;
 insert into customers values(seq_customers.nextval, 'Jan', 'Kowalski', 123456789, 'jan.kowalski@gmail.com', address_object('sloneczna 7', 2, '12-345', 'lodz'), 1.8);
+
+begin
+OWNER_COMMANDS.ADD_CUSTOMER('Jan', 'Kowalski', 123456789, 'jan.kowalski@gmail.com', address_object('sloneczna 7', 2, '12-345', 'lodz'), to_number('1,8'));
+end;
 
 
 -- #############################################################################################################################
