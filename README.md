@@ -9,7 +9,7 @@ Projekt obiektowej bazy danych powinien zawierać opracowaną strukturę składa
 - wstawianie danych do tabeli z referencją,
 + tworzenie i użytkowanie typu VARRY/ NESTED TABLE - do modelowania relacji jeden do wielu, gdzie po stronie "wiele" występuje kolekcja obiektów,
 + implementacja z zastosowaniem języka PL/SQL logiki biznesowej w postaci pakietów (a w nich procedur/funkcji) umożliwiającej obsługę bazy obiektowej (kursory, ref kursory, obsługa błędów, wyzwalacze itp.)
-! przykład obsługi obiektowej bazy danych od strony opracowanych funkcjonalności.
++ przykład obsługi obiektowej bazy danych od strony opracowanych funkcjonalności.
 
 
 Dodatkowo proszę przygotować sprawozdanie w którym opisane zostaną założenia projektowe:
