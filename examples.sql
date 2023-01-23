@@ -1,12 +1,13 @@
 -- Adding new customer to db by owner
 begin
-    OWNER_COMMANDS.ADD_CUSTOMER('Jan', 'Kowalski', 512400122, 'jan.kowalski@gmail.com', address_object('sloneczna 7', 2, '12-345', 'lodz'), to_number('1,8'));
-    OWNER_COMMANDS.ADD_CUSTOMER('Adam', 'Nowak', 665123098, 'Adam.Nowak@gmail.com', address_object('wesola 34', 12, '91-561', 'lodz'), to_number('1,65'));
-    --OWNER_COMMANDS.ADD_CUSTOMER('Adam', 'Nowak', 665123098, 'adam.com', address_object('wesola 34', 12, '91-561', 'lodz'), to_number('1,65'));                      -- wrong email
-    --OWNER_COMMANDS.ADD_CUSTOMER('Jan', 'Kowalski', 512400122, 'jan.kowalski@gmail.com', address_object('sloneczna 7', 2, '12-345', 'lodz'), to_number('-1,8'));     -- wrong height
+    OWNER_COMMANDS.ADD_CUSTOMER('Jan', 'Kowalski', 512400122, 'jan.kowalski@gmail.com', address_object('sloneczna 7', 2, '12-345', 'lodz'), 180);
+    OWNER_COMMANDS.ADD_CUSTOMER('Anna', 'Kowalska', 512400122, 'anna.kowalska@gmail.com', address_object('sloneczna 7', 2, '12-345', 'lodz'), 170);
+    OWNER_COMMANDS.ADD_CUSTOMER('Adam', 'Nowak', 665123098, 'Adam.Nowak@gmail.com', address_object('wesola 34', 12, '91-561', 'lodz'), 240);
+    OWNER_COMMANDS.ADD_CUSTOMER('Adam', 'Nowak', 665123098, 'adam.com', address_object('wesola 34', 12, '91-561', 'lodz'), 165);                      -- wrong email
+    OWNER_COMMANDS.ADD_CUSTOMER('Jan', 'Kowalski', 512400122, 'jan.kowalski@gmail.com', address_object('sloneczna 7', 2, '12-345', 'lodz'), -170);     -- wrong height
 end;
 
-select * from customers;
+select first_name, last_name, deref(address) from customers;
 
 -- Adding equipment by owner
 begin
@@ -109,6 +110,15 @@ begin
 end;
 
 -- Searching for ideal ski
+begin 
+    CUSTOMER_COMMANDS.SEARCH_SKIS(
+        height => 245,
+        ski_type => 'allride',
+        sex => 'M'
+    );
+end;
+
+--can't find skis
 begin 
     CUSTOMER_COMMANDS.SEARCH_SKIS(
         height => 240,

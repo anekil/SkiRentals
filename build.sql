@@ -24,7 +24,7 @@ CREATE OR REPLACE TYPE BODY eq_t AS
 -- function that can be overriden by subtypes
  MEMBER FUNCTION show RETURN VARCHAR2 IS
  BEGIN
-   RETURN 'Id: ' || TO_CHAR(id) || ', Name: ' || name;
+   RETURN 'Type: ' || get_type || ' Id: ' || TO_CHAR(id) || ', Name: ' || name;
  END;
  MEMBER FUNCTION get_type RETURN VARCHAR2 IS BEGIN RETURN 'equipment'; END;
  MEMBER FUNCTION get_name RETURN VARCHAR2 IS BEGIN RETURN name; END;
@@ -117,6 +117,8 @@ create or replace type address_object as object(
     city varchar2(20)
 );
 /
+CREATE TABLE address_table OF address_object;
+/
 create table customers(
     customer_id number primary key not null,
     first_name varchar2(20),
@@ -124,7 +126,7 @@ create table customers(
     phone_number number(9,0),
     email varchar(40)
     CONSTRAINT check_email CHECK (email LIKE '%@%.com' OR email LIKE '%@%.pl'),
-    address address_object,
+    address REF address_object REFERENCES address_table,
     height number(5, 2)
     CONSTRAINT check_height CHECK (height > 0)
 );
@@ -193,8 +195,13 @@ CREATE OR REPLACE
 PACKAGE BODY OWNER_COMMANDS AS
 
   PROCEDURE ADD_CUSTOMER(fname in varchar2, lname in varchar2, phone in number, email in varchar2, address in address_object, height in number) AS
+    a REF address_object;
   BEGIN
-    insert into customers values(seq_customers.nextval, fname, lname, phone, email, address, height);
+    INSERT INTO address_table ad VALUES(address) RETURNING REF(ad) INTO a;
+    insert into customers values(seq_customers.nextval, fname, lname, phone, email, a, height);
+    EXCEPTION 
+        WHEN OTHERS THEN 
+        dbms_output.put_line('cannot add customer');
   END ADD_CUSTOMER;
 
   PROCEDURE ADD_ITEM(eq_item in eq_t) AS
@@ -251,6 +258,7 @@ PACKAGE BODY OWNER_COMMANDS AS
   s_date date;
   e_date date;
   cur cur_type;
+  result varchar2(256);
   BEGIN
     open cur for select rental_id, customer_id, rented_ids, rental_start_date, rental_end_date from rentals;
         loop
@@ -260,7 +268,8 @@ PACKAGE BODY OWNER_COMMANDS AS
             dbms_output.put_line('customer id: ' || cust_id);
             dbms_output.put('list of rentals: ');
             for i in rent_ids.first..rent_ids.last loop
-                dbms_output.put(rent_ids(i) || ' ');
+                select eq.show() into result from eq_tab eq where eq.id = rent_ids(i);
+                dbms_output.put('{' || result || '} ');
             end loop;
             dbms_output.put_line('');
             dbms_output.put_line('start date: ' || s_date);
@@ -405,6 +414,7 @@ PACKAGE BODY CUSTOMER_COMMANDS AS
     cust_id number
 ) 
 AS
+  result varchar2(256);
   cursor cur is select rental_id, customer_id, rented_ids, rental_start_date, rental_end_date 
   from rentals r where r.customer_id = cust_id;
   BEGIN
@@ -414,7 +424,8 @@ AS
         dbms_output.put_line('customer id: ' || c.customer_id);
         dbms_output.put('list of rentals: ');
         for i in c.rented_ids.first..c.rented_ids.last loop
-            dbms_output.put(c.rented_ids(i) || ' ');
+            select eq.show() into result from eq_tab eq where eq.id = c.rented_ids(i);
+            dbms_output.put('{' || result || '} ');
         end loop;
         dbms_output.put_line('');
         dbms_output.put_line('start date: ' || c.rental_start_date);
@@ -447,7 +458,7 @@ AS
         searched_lenght := height;
     end if;
     
-    select eq.show() into result from eq_tab eq where eq.id = (select e.id from eq_tab e where e.get_ski_length() = searched_lenght);
+    select eq.show() into result from eq_tab eq where eq.id = (select e.id from eq_tab e where e.get_ski_length() = searched_lenght and  e.get_ski_type() = ski_type);
     dbms_output.put_line(result);
     
   EXCEPTION
